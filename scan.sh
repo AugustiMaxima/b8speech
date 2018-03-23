@@ -7,19 +7,16 @@ do
 done < $1
 
 files=$(ls)
+scanlogs=${2:-scanlogs}
+mkdir $scanlogs
 
 for i in $files
 do
     for term in ${terms[*]}
     do
-	grep $term -irn $i >> "$i"_"$term".scn
+	grep $term -irn $i >> "$scanlogs"/"$i"_"$term".scn
     done
 done
-
-scanlogs=${2:scanlogs}
-
-mkdir $scanlogs
-mv *.scn "$scanlogs"/
 
 cd $scanlogs
 
@@ -45,7 +42,7 @@ do
     echo $i >> temp.rpt
 done
 
-out=${3:Report}
+out=${3:-Report}
 
 cat temp.rpt | column -t > $out
 rm temp.rpt
